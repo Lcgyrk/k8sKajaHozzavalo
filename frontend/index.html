@@ -137,7 +137,7 @@
       const data = await res.json();
       if (data.hozzavalok) {
         const items = data.hozzavalok.map(h => `<li>${h}</li>`).join('');
-        result.innerHTML = `<p class="result-title">🧂 Hozzávalók:</p><ul>${items}</ul>`;
+        result.innerHTML = `<p class="result-title">Hozzávalók:</p><ul>${items}</ul>`;
       } else {
         result.innerHTML = `<p class="empty">Nem található hozzávaló.</p>`;
       }

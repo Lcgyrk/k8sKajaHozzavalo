@@ -17,6 +17,7 @@ const dishes = [
   { id: 13, nev: "Somlói galuska",     hozzavalok: ["piskóta", "diókrém", "csokoládékrém", "rum", "tejszín", "dió", "mazsola"] },
   { id: 14, nev: "Dobos torta",        hozzavalok: ["piskótalap", "csokoládékrém", "vaj", "cukor", "tojás", "karamell"] },
   { id: 15, nev: "Rétes",              hozzavalok: ["réteslap", "alma", "cukor", "fahéj", "zsemlemorzsa", "vaj"] },
+  { id: 16, nev: "Túrós csusza",       hozzavalok: ["csuszatészta", "túró", "tejföl", "só", "cukor", "szalonna"] },
 ];
 
 const server = http.createServer((req, res) => {
