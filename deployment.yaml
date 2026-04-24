@@ -1,0 +1,106 @@
+# kubectl create secret docker-registry ghcr-auth-secret --docker-server=ghcr.io --docker-username=Lcgyrk --docker-password=$GHCR_TOKEN
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8sfood-backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: k8sfood-backend
+  template:
+    metadata:
+      labels:
+        pod: k8sfood-backend
+    spec:
+      containers:
+        - name: k8sfood-backend-container
+          image: ghcr.io/Lcgyrk/k8sfood-backend:1777018280
+          ports:
+            - containerPort: 3000
+      imagePullSecrets:
+        - name: ghcr-auth-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8sfood-backend-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    pod: k8sfood-backend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8sfood-backend-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: k8sfood-backend-paplaszlo.jcloud.jedlik.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: k8sfood-backend-clusterip
+                port:
+                  number: 3000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8sfood-frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      pod: k8sfood-frontend
+  template:
+    metadata:
+      labels:
+        pod: k8sfood-frontend
+    spec:
+      containers:
+        - name: k8sfood-frontend-container
+          image: ghcr.io/Lcgyrk/k8sfood-frontend:1777018280
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+        - name: ghcr-auth-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k8sfood-frontend-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    pod: k8sfood-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8sfood-frontend-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: k8sfood-paplaszlo.jcloud.jedlik.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: k8sfood-frontend-clusterip
+                port:
+                  number: 80

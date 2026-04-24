@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Magyar Ételek Hozzávalói</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f5f0e8 0%, #ffe8c8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(180,80,0,0.15);
+      padding: 40px 36px;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .card h1 {
+      font-size: 1.7rem;
+      color: #b34700;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .card p.subtitle {
+      text-align: center;
+      color: #a07040;
+      font-size: 0.95rem;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #7a4010;
+      margin-bottom: 8px;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: 2px solid #e8c080;
+      background: #fffaf2;
+      color: #3a2000;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    select:focus { border-color: #d07000; }
+
+    #result {
+      margin-top: 28px;
+      min-height: 40px;
+    }
+
+    #result .result-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #7a4010;
+      margin-bottom: 12px;
+    }
+
+    #result ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    #result ul li {
+      background: linear-gradient(135deg, #ff8c00, #d05000);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .empty {
+      text-align: center;
+      color: #c09060;
+      font-style: italic;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🍲 Magyar Receptek</h1>
+    <p class="subtitle">Válassz egy ételt a hozzávalók megtekintéséhez</p>
+
+    <label for="dishSelect">Étel neve</label>
+    <select id="dishSelect" onchange="showIngredients()">
+      <option value="">-- Válassz ételt --</option>
+    </select>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const BACKEND = 'http://k8sfood-backend-paplaszlo.jcloud.jedlik.cloud';
+
+    async function loadDishes() {
+      const res = await fetch(`${BACKEND}/dishes`);
+      const dishes = await res.json();
+      const select = document.getElementById('dishSelect');
+      dishes.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.id;
+        opt.textContent = d.nev;
+        select.appendChild(opt);
+      });
+    }
+
+    async function showIngredients() {
+      const id = document.getElementById('dishSelect').value;
+      const result = document.getElementById('result');
+      if (!id) { result.innerHTML = ''; return; }
+
+      const res = await fetch(`${BACKEND}/ingredients?id=${id}`);
+      const data = await res.json();
+      if (data.hozzavalok) {
+        const items = data.hozzavalok.map(h => `<li>${h}</li>`).join('');
+        result.innerHTML = `<p class="result-title">🧂 Hozzávalók:</p><ul>${items}</ul>`;
+      } else {
+        result.innerHTML = `<p class="empty">Nem található hozzávaló.</p>`;
+      }
+    }
+
+    loadDishes();
+  </script>
+</body>
+</html>
