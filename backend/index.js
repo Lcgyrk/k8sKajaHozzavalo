@@ -3,7 +3,7 @@ const url = require('url');
 
 const dishes = [
   { id: 1,  nev: "Gulyásleves",          hozzavalok: ["marhahús", "hagyma", "paprika", "paradicsom", "burgonya", "só", "kömény", "fokhagyma"] },
-  { id: 2,  nev: "Lecsó",               hozzavalok: ["paprika", "paradicsom", "hagyma", "kolbász", "tojás", "só", "olaj"] },
+  { id: 2,  nev: "Lecsó",               hozzavalok: ["paprika", "paradicsom", "hagyma", "kolbász", "tojás", "olaj"] },
   { id: 3,  nev: "Töltött káposzta",    hozzavalok: ["káposztalevél", "darált sertéshús", "rizs", "hagyma", "tejföl", "só", "bors", "pirospaprika"] },
   { id: 4,  nev: "Pörkölt",             hozzavalok: ["sertéshús", "hagyma", "pirospaprika", "só", "bors", "olaj", "paradicsom"] },
   { id: 5,  nev: "Halászlé",            hozzavalok: ["ponty", "hagyma", "pirospaprika", "só", "erős paprika", "paradicsom"] },
