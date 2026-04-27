@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: k8sfood-backend-container
-          image: ghcr.io/lcgyrk/k8sfood-backend:1777271140
+          image: ghcr.io/lcgyrk/k8sfood-backend:1777271233
           ports:
             - containerPort: 3000
       imagePullSecrets:
@@ -68,7 +68,7 @@ spec:
     spec:
       containers:
         - name: k8sfood-frontend-container
-          image: ghcr.io/lcgyrk/k8sfood-frontend:1777271140
+          image: ghcr.io/lcgyrk/k8sfood-frontend:1777271233
           ports:
             - containerPort: 80
       imagePullSecrets:
